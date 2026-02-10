@@ -1,0 +1,348 @@
+/* login.css */
+/* Modal Styles */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(5px);
+}
+
+.modal-content {
+  background-color: white;
+  margin: 5% auto;
+  padding: 0;
+  border-radius: 20px;
+  width: 90%;
+  max-width: 800px;
+  position: relative;
+  animation: modalSlideIn 0.3s ease-out;
+}
+
+@keyframes modalSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.close-modal {
+  position: absolute;
+  right: 20px;
+  top: 15px;
+  font-size: 28px;
+  font-weight: bold;
+  color: #666;
+  cursor: pointer;
+  z-index: 10;
+}
+
+.close-modal:hover {
+  color: #000;
+}
+
+/* Login Container Styles */
+.login-container {
+  padding: 40px;
+  min-height: 500px;
+}
+
+/* Three Circle Selection */
+.circle-selection {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  margin: 40px 0;
+  flex-wrap: wrap;
+}
+
+.user-circle {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  width: 180px;
+}
+
+.user-circle:hover {
+  transform: translateY(-10px);
+}
+
+.circle {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 15px;
+  transition: all 0.3s ease;
+  border: 5px solid transparent;
+}
+
+.circle i {
+  font-size: 3.5rem;
+  color: white;
+}
+
+.circle-citizen {
+  background: linear-gradient(135deg, #1f7a5a, #2e8b57);
+}
+
+.circle-collector {
+  background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+}
+
+.circle-admin {
+  background: linear-gradient(135deg, #9333ea, #7c3aed);
+}
+
+.user-circle:hover .circle {
+  border-color: #1f7a5a;
+  box-shadow: 0 10px 25px rgba(31, 122, 90, 0.3);
+}
+
+.user-label {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #1f2937;
+}
+
+/* Form Styles */
+.form-container {
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.form-header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.form-header h2 {
+  color: #0f3d2e;
+  margin-bottom: 10px;
+}
+
+.form-header p {
+  color: #6b7280;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  color: #374151;
+  font-weight: 500;
+}
+
+.form-group input,
+.form-group select {
+  width: 100%;
+  padding: 12px 15px;
+  border: 2px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 16px;
+  transition: border-color 0.3s;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+  outline: none;
+  border-color: #1f7a5a;
+}
+
+.form-row {
+  display: flex;
+  gap: 15px;
+}
+
+.form-row .form-group {
+  flex: 1;
+}
+
+.password-toggle {
+  position: relative;
+}
+
+.password-toggle input {
+  padding-right: 45px;
+}
+
+.toggle-password {
+  position: absolute;
+  right: 15px;
+  top: 42px;
+  background: none;
+  border: none;
+  color: #6b7280;
+  cursor: pointer;
+  font-size: 1.1rem;
+}
+
+.form-options {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+}
+
+.remember-me {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.remember-me input {
+  width: auto;
+}
+
+.forgot-password {
+  color: #1f7a5a;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.forgot-password:hover {
+  text-decoration: underline;
+}
+
+.submit-btn {
+  width: 100%;
+  padding: 15px;
+  background: #1f7a5a;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.submit-btn:hover {
+  background: #0f3d2e;
+  transform: translateY(-2px);
+}
+
+.switch-form {
+  text-align: center;
+  margin-top: 25px;
+  color: #6b7280;
+}
+
+.switch-form a {
+  color: #1f7a5a;
+  font-weight: 600;
+  text-decoration: none;
+  margin-left: 5px;
+}
+
+.switch-form a:hover {
+  text-decoration: underline;
+}
+
+/* Back Button */
+.back-to-selection {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: none;
+  border: none;
+  color: #6b7280;
+  cursor: pointer;
+  font-size: 1rem;
+  margin-bottom: 20px;
+  padding: 5px 10px;
+  border-radius: 5px;
+  transition: all 0.3s ease;
+}
+
+.back-to-selection:hover {
+  color: #1f7a5a;
+  background: rgba(31, 122, 90, 0.1);
+}
+
+/* Success Message */
+.success-message {
+  text-align: center;
+  padding: 40px;
+}
+
+.success-icon {
+  width: 80px;
+  height: 80px;
+  background: #10b981;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 20px;
+}
+
+.success-icon i {
+  font-size: 2.5rem;
+  color: white;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .modal-content {
+    margin: 10% auto;
+    width: 95%;
+  }
+  
+  .circle-selection {
+    gap: 20px;
+  }
+  
+  .circle {
+    width: 120px;
+    height: 120px;
+  }
+  
+  .circle i {
+    font-size: 2.5rem;
+  }
+  
+  .user-circle {
+    width: 120px;
+  }
+  
+  .login-container {
+    padding: 25px;
+  }
+  
+  .form-row {
+    flex-direction: column;
+    gap: 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .circle-selection {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .circle {
+    width: 100px;
+    height: 100px;
+  }
+  
+  .circle i {
+    font-size: 2rem;
+  }
+}

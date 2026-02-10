@@ -1,0 +1,87 @@
+<!-- navbar.html -->
+<nav>
+  <div class="container navbar">
+    <div class="logo">
+      <div class="logo-icon"><i class="fas fa-recycle"></i></div>
+      <div class="logo-text">Sarathi</div>
+    </div>
+
+    <div class="hamburger" onclick="toggleMenu()">
+      <i class="fas fa-bars"></i>
+    </div>
+
+    <div class="nav-right" id="navLinks">
+      <button onclick="go('home')">Home</button>
+      <button onclick="go('works')">How It Works</button>
+      <button onclick="go('services')">Services</button>
+      <button onclick="go('impact')">Impact</button>
+      <button class="auth login" onclick="showLoginModal()">Login</button>
+      <button class="auth primary" onclick="showSignupModal()">Sign Up</button>
+    </div>
+  </div>
+</nav>
+
+<!-- Login Modal (will be used by login.js) -->
+<div id="loginModal" class="modal">
+  <div class="modal-content">
+    <span class="close-modal" onclick="closeLoginModal()">&times;</span>
+    <div id="loginContainer">
+      <!-- Content will be loaded by login.js -->
+    </div>
+  </div>
+</div>
+
+<script>
+// Navigation function for single-page navigation
+function go(sectionId) {
+  if (window.location.pathname.includes('index.html')) {
+    // On main page, scroll to section
+    const element = document.getElementById(sectionId);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+  } else {
+    // On other pages, redirect to index.html with hash
+    window.location.href = `index.html#${sectionId}`;
+  }
+  
+  // Close mobile menu if open
+  const navLinks = document.getElementById('navLinks');
+  if (navLinks.classList.contains('active')) {
+    navLinks.classList.remove('active');
+  }
+}
+
+// Mobile menu toggle
+function toggleMenu() {
+  const navLinks = document.getElementById('navLinks');
+  navLinks.classList.toggle('active');
+}
+
+// Modal functions
+function showLoginModal() {
+  document.getElementById('loginModal').style.display = 'block';
+}
+
+function closeLoginModal() {
+  document.getElementById('loginModal').style.display = 'none';
+}
+
+// Close modal when clicking outside
+window.onclick = function(event) {
+  const modal = document.getElementById('loginModal');
+  if (event.target == modal) {
+    modal.style.display = 'none';
+  }
+}
+
+// Load login system if needed
+window.addEventListener('DOMContentLoaded', function() {
+  // Check if we need to load login system
+  if (window.location.pathname.includes('login.html')) {
+    // On login page, redirect to main login
+    window.location.href = 'index.html';
+    setTimeout(() => showLoginModal(), 100);
+  }
+});
+</script>

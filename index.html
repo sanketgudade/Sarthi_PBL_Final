@@ -14,28 +14,19 @@
 
 <body>
 
-<!-- ================= NAVBAR ================= -->
-<nav>
-  <div class="container navbar">
-    <div class="logo">
-      <div class="logo-icon"><i class="fas fa-recycle"></i></div>
-      <div class="logo-text">Sarathi</div>
-    </div>
+<!-- Instead of the entire nav section, include this: -->
+<div id="navbar-container"></div>
 
-    <div class="hamburger" onclick="toggleMenu()">
-      <i class="fas fa-bars"></i>
-    </div>
-
-    <div class="nav-right" id="navLinks">
-      <button onclick="go('home')">Home</button>
-      <button onclick="go('works')">How It Works</button>
-      <button onclick="go('services')">Services</button>
-      <button onclick="go('impact')">Impact</button>
-      <button class="auth login">Login</button>
-      <button class="auth primary">Sign Up</button>
-    </div>
-  </div>
-</nav>
+<!-- Add these script tags at the end of body before closing body tag -->
+<script>
+    // Load navbar
+    fetch('./componets/navbar.html')
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById('navbar-container').innerHTML = data;
+        })
+        .catch(error => console.error('Error loading navbar:', error));
+</script>
 
 <!-- ================= HERO ================= -->
 <section id="home" class="hero fade show">
