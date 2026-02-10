@@ -4,236 +4,252 @@
   <meta charset="UTF-8">
   <title>Sarathi | Smart Waste Management</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Font Awesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <link rel="stylesheet" href="style.css">
+
+  <!-- Main CSS -->
+  <link rel="stylesheet" href="css/style.css">
 </head>
+
 <body>
 
-
-
+<!-- ================= NAVBAR ================= -->
 <nav>
   <div class="container navbar">
     <div class="logo">
       <div class="logo-icon"><i class="fas fa-recycle"></i></div>
       <div class="logo-text">Sarathi</div>
     </div>
-    <div class="hamburger" onclick="toggleMenu()"><i class="fas fa-bars"></i></div>
+
+    <div class="hamburger" onclick="toggleMenu()">
+      <i class="fas fa-bars"></i>
+    </div>
+
     <div class="nav-right" id="navLinks">
       <button onclick="go('home')">Home</button>
       <button onclick="go('works')">How It Works</button>
       <button onclick="go('services')">Services</button>
       <button onclick="go('impact')">Impact</button>
-      
-        <button class="auth login">Login</button>
-        <button class="auth primary">Sign Up</button>
-      </div>
+      <button class="auth login">Login</button>
+      <button class="auth primary">Sign Up</button>
     </div>
   </div>
 </nav>
 
+<!-- ================= HERO ================= -->
 <section id="home" class="hero fade show">
   <div class="container hero-grid">
+
     <div class="hero-text">
       <h1>Smart & Reliable Waste Collection</h1>
       <p>
-        Sarathi introduces a QR-coded, bag-based waste collection model that ensures every pickup is traceable, verified, and transparent
+        Sarathi introduces a QR-coded, bag-based waste collection model that ensures
+        every pickup is traceable, verified, and transparent.
       </p>
+
       <div class="cta-group">
-        <button class="btn primary"></i>Try Now</button>
-        <button class="btn outline"><i class="fas fa-play-circle"></i> Watch Demo</button>
+        <button class="btn primary">Try Now</button>
+        <button class="btn outline">
+          <i class="fas fa-play-circle"></i> Watch Demo
+        </button>
       </div>
     </div>
+
     <div class="hero-img-container">
-      <img class="hero-img hover-img" src="pickup.png" alt="Waste Collection Team">
+      <img class="hero-img hover-img"
+           src="assets/pickup.png"
+           alt="Waste Collection Team">
     </div>
+
   </div>
 </section>
+
+<!-- ================= FEATURES ================= -->
 <section id="features" class="fade gray">
   <div class="container">
     <h2>Smart App Features</h2>
     <p class="center section-subtitle">Powered by the TrashMate Platform</p>
 
     <div class="cards feature-grid">
-      
+
       <div class="card feature-card">
         <div class="f-icon"><i class="fas fa-map-marked-alt"></i></div>
         <h3>Live GPS Tracking</h3>
-        <p>Track the waste collector's real-time location and know exactly when they arrive.</p>
+        <p>Track the waste collector's real-time location.</p>
       </div>
 
       <div class="card feature-card">
         <div class="f-icon"><i class="fas fa-shopping-bag"></i></div>
         <h3>Buy QR Bags</h3>
-        <p>Purchase verified QR-coded waste bags directly through the app.</p>
+        <p>Purchase verified QR-coded waste bags through the app.</p>
       </div>
 
       <div class="card feature-card">
         <div class="f-icon"><i class="fas fa-exclamation-triangle"></i></div>
         <h3>Report Issues</h3>
-        <p>Instantly report missed pickups or illegal dumping with photo evidence.</p>
+        <p>Instantly report missed pickups or illegal dumping.</p>
       </div>
 
       <div class="card feature-card">
         <div class="f-icon"><i class="fas fa-calendar-check"></i></div>
         <h3>Hybrid Pickups</h3>
-        <p>Schedule daily routine pickups or book on-demand slots for bulk waste.</p>
+        <p>Schedule routine or on-demand pickups.</p>
       </div>
 
       <div class="card feature-card">
         <div class="f-icon"><i class="fas fa-route"></i></div>
         <h3>Smart Routing</h3>
-        <p>AI-optimized navigation ensures collectors never miss a house.</p>
+        <p>AI-optimized routes for collectors.</p>
       </div>
 
       <div class="card feature-card">
         <div class="f-icon"><i class="fas fa-id-card"></i></div>
         <h3>Digital Attendance</h3>
-        <p>Automated work logs and safety monitoring for the workforce.</p>
+        <p>Automated work logs and safety tracking.</p>
       </div>
 
     </div>
   </div>
 </section>
 
+<!-- ================= HOW IT WORKS ================= -->
 <section id="works" class="fade gray">
   <div class="container">
     <h2>How It Works</h2>
-    <p class="center section-subtitle">From your doorstep to the recycling center in 4 steps</p>
+    <p class="center section-subtitle">
+      From your doorstep to recycling center in 4 steps
+    </p>
 
     <div class="cards process-grid">
+
       <div class="card work-card">
         <div class="step-badge">1</div>
-        <img class="card-img" src="request.png" alt="Request Pickup">
+        <img class="card-img" src="assets/request.png" alt="Request Pickup">
         <h3>Request & Schedule</h3>
-        <p>Citizens schedule daily or on-demand pickups via the mobile app</p>
+        <p>Citizens schedule pickups via the app.</p>
       </div>
 
       <div class="card work-card">
         <div class="step-badge">2</div>
-        <img class="card-img" src="assign collector.png" alt="Assign Route">
+        <img class="card-img" src="assets/assign collector.png" alt="Assign Collector">
         <h3>Smart Routing</h3>
-        <p>System assigns the nearest collector and optimizes the route map</p>
+        <p>Nearest collector is assigned automatically.</p>
       </div>
 
       <div class="card work-card">
         <div class="step-badge">3</div>
-        <img class="card-img" src="verify.png" alt="QR Verification">
+        <img class="card-img" src="assets/verify.png" alt="QR Verification">
         <h3>QR Verification</h3>
-        <p>Collector scans the QR-coded bag to digitally verify the pickup</p>
+        <p>Collector scans QR-coded waste bag.</p>
       </div>
 
       <div class="card work-card">
         <div class="step-badge">4</div>
-        <img class="card-img" src="update.png" alt="System Update">
+        <img class="card-img" src="assets/update.png" alt="Live Update">
         <h3>Live Update</h3>
-        <p>Citizens get SMS confirmation and Eco-Points; Dashboard updates instantly</p>
+        <p>Citizens receive confirmation instantly.</p>
       </div>
+
     </div>
   </div>
 </section>
 
+<!-- ================= SERVICES ================= -->
 <section id="services" class="fade gray">
   <div class="container">
     <h2>Our Services</h2>
-    <p class="center section-subtitle">Handling all types of urban waste responsibly</p>
+    <p class="center section-subtitle">
+      Handling all types of urban waste responsibly
+    </p>
 
     <div class="cards service-grid">
-      
+
       <div class="card service-card">
-        <img class="tight-img" src="qr based collecton.png" alt="Daily Collection">
+        <img class="tight-img" src="assets/qr_based_collection.png" alt="QR Collection">
         <h3>Daily QR Collection</h3>
-        <p>Standard verified pickup for households.</p>
+        <p>Verified household waste pickup.</p>
       </div>
 
       <div class="card service-card">
-        <img class="tight-img" src="your-compost-image.png" alt="Composting">
+        <img class="tight-img" src="assets/your-compost-image.png" alt="Compost">
         <h3>Organic Composting</h3>
-        <p>Dedicated wet waste processing for fertilizer.</p>
+        <p>Wet waste processing for fertilizer.</p>
       </div>
 
       <div class="card service-card">
-        <img class="tight-img" src="your-e-waste-image.png" alt="E-Waste">
+        <img class="tight-img" src="assets/your-e-waste-image.png" alt="E-Waste">
         <h3>E-Waste Disposal</h3>
-        <p>Safe recycling for electronics and batteries.</p>
+        <p>Safe electronic waste recycling.</p>
       </div>
 
       <div class="card service-card">
-        <img class="tight-img" src="your-recycle-image.png" alt="Dry Recycling">
+        <img class="tight-img" src="assets/your-recycle-image.png" alt="Recycling">
         <h3>Dry Recycling</h3>
-        <p>Sorting plastics, paper, and glass for reuse.</p>
-      </div>
-      
-      <div class="card service-card">
-        <img class="tight-img" src="your-event-image.png" alt="Bulk Waste">
-        <h3>Event & Bulk</h3>
-        <p>Large scale cleanup for events and societies.</p>
+        <p>Plastic, glass and paper recycling.</p>
       </div>
 
       <div class="card service-card">
-        <img class="tight-img" src="update.png" alt="Monitoring">
+        <img class="tight-img" src="assets/your-event-image.png" alt="Bulk Waste">
+        <h3>Event & Bulk Waste</h3>
+        <p>Large-scale cleanup solutions.</p>
+      </div>
+
+      <div class="card service-card">
+        <img class="tight-img" src="assets/update.png" alt="Monitoring">
         <h3>Municipal Monitoring</h3>
-        <p>Real-time dashboards for city administration.</p>
+        <p>Real-time admin dashboards.</p>
       </div>
 
     </div>
   </div>
 </section>
 
+<!-- ================= IMPACT ================= -->
 <section id="impact" class="fade impact-section">
   <div class="container">
+
     <div class="impact-header">
       <h2>Real-World Impact</h2>
-      <p>Driving change across environment, society, and economy.</p>
+      <p>Driving environmental and social change.</p>
     </div>
 
     <div class="impact-grid">
-      
+
       <div class="impact-box dark-green">
         <div class="impact-icon"><i class="fas fa-leaf"></i></div>
         <h3>Environmental</h3>
-        <ul class="impact-list">
-          <li><i class="fas fa-check"></i> <strong>Zero Landfill:</strong> Better segregation increases recycling rates.</li>
-          <li><i class="fas fa-check"></i> <strong>Lower CO2:</strong> Route optimization reduces fuel consumption.</li>
-          <li><i class="fas fa-check"></i> <strong>Cleaner Streets:</strong> Eliminates overflowing bins and foul smells.</li>
+        <ul>
+          <li>Zero landfill goals</li>
+          <li>Reduced CO₂ emissions</li>
+          <li>Cleaner streets</li>
         </ul>
       </div>
 
       <div class="impact-box white">
         <div class="impact-icon"><i class="fas fa-hands-helping"></i></div>
-        <h3>Social & Worker Safety</h3>
-        <ul class="impact-list">
-          <li><i class="fas fa-check"></i> <strong>Fair Wages:</strong> Digital logs ensure workers are paid accurately.</li>
-          <li><i class="fas fa-check"></i> <strong>Dignity of Labor:</strong> Professionalizes the waste collection workforce.</li>
-          <li><i class="fas fa-check"></i> <strong>Public Health:</strong> Reduces spread of waste-borne diseases.</li>
+        <h3>Social Impact</h3>
+        <ul>
+          <li>Worker dignity</li>
+          <li>Public health improvement</li>
+          <li>Transparent governance</li>
         </ul>
       </div>
 
     </div>
 
-    <div class="stats-bar">
-      <div class="stat-item">
-        <span class="stat-number">100%</span>
-        <span class="stat-label">Traceable Waste [cite: 48]</span>
-      </div>
-      <div class="stat-item">
-        <span class="stat-number">24/7</span>
-        <span class="stat-label">Real-time Monitoring [cite: 55]</span>
-      </div>
-      <div class="stat-item">
-        <span class="stat-number">0%</span>
-        <span class="stat-label">Illegal Dumping Goal [cite: 254]</span>
-      </div>
-    </div>
-
   </div>
 </section>
 
+<!-- ================= FOOTER ================= -->
 <footer>
   <div class="container">
-    <p>© 2026 Sarathi </p>
+    <p>© 2026 Sarathi | Smart Waste Management</p>
   </div>
 </footer>
 
-<script src="script.js"></script>
+<!-- JS -->
+<script src="js/script.js"></script>
+
 </body>
 </html>
