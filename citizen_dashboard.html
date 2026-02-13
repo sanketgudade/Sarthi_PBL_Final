@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Citizen Dashboard - Sarathi</title>
+  
+  <!-- Fonts & Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Segoe+UI:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Mapbox GL JS -->
+  <link href='https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.css' rel='stylesheet' />
+  <script src='https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js'></script>
+  
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+  
+  <!-- QR Code & AI Libraries -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@3.11.0/dist/tf.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/coco-ssd@2.2.2/dist/coco-ssd.min.js"></script>
+  
+  <!-- Styles -->
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/citizen-dashboard.css">
+</head>
+<body>
+  <div class="dashboard-wrapper">
+    <!-- Mobile Menu Toggle -->
+    <button class="mobile-menu-toggle" onclick="toggleSidebar()">
+      <i class="fas fa-bars"></i>
+    </button>
+
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <div class="logo">
+          <div class="logo-icon">
+            <i class="fas fa-recycle"></i>
+          </div>
+          <div class="logo-text">
+            <span class="logo-title">Sarathi</span>
+            <span class="logo-subtitle">Citizen Portal</span>
+          </div>
+        </div>
+      </div>
+
+      <nav class="sidebar-nav">
+        <ul class="nav-menu">
+          <li class="nav-item">
+            <a href="#" class="nav-link active" onclick="showSection('dashboard')" data-section="dashboard">
+              <i class="fas fa-home"></i>
+              <span>Dashboard</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="#" class="nav-link" onclick="showSection('request-pickup')" data-section="request-pickup">
+              <i class="fas fa-calendar-plus"></i>
+              <span>Request Pickup</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="#" class="nav-link" onclick="showSection('my-requests')" data-section="my-requests">
+              <i class="fas fa-list-alt"></i>
+              <span>My Requests</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="#" class="nav-link" onclick="showSection('track-collector')" data-section="track-collector">
+              <i class="fas fa-map-marked-alt"></i>
+              <span>Track Collector</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="#" class="nav-link" onclick="showSection('history')" data-section="history">
+              <i class="fas fa-history"></i>
+              <span>History</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="#" class="nav-link" onclick="showSection('profile')" data-section="profile">
+              <i class="fas fa-user-circle"></i>
+              <span>Profile</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="#" class="nav-link" onclick="showSection('complaints')" data-section="complaints">
+              <i class="fas fa-exclamation-circle"></i>
+              <span>Complaints</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="user-profile">
+          <div class="user-avatar">
+            <i class="fas fa-user"></i>
+          </div>
+          <div class="user-info">
+            <span class="user-name">John Doe</span>
+            <span class="user-email">john@example.com</span>
+          </div>
+        </div>
+        <button class="btn-logout" onclick="logout()">
+          <i class="fas fa-sign-out-alt"></i>
+          <span>Logout</span>
+        </button>
+      </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="main-content">
+      <!-- Top Header -->
+      <header class="top-header">
+        <div class="header-left">
+          <h1 class="page-title" id="page-title">Dashboard</h1>
+          <p class="page-subtitle" id="page-subtitle">Welcome back! Manage your waste collection requests</p>
+        </div>
+        <div class="header-right">
+          <button class="notification-btn" onclick="toggleNotifications()">
+            <i class="fas fa-bell"></i>
+            <span class="notification-badge">3</span>
+          </button>
+          <div class="notification-dropdown" id="notificationDropdown">
+            <div class="notification-header">
+              <h3>Notifications</h3>
+              <button class="mark-read-btn">Mark all as read</button>
+            </div>
+            <div class="notification-list">
+              <div class="notification-item unread">
+                <i class="fas fa-check-circle"></i>
+                <div class="notification-content">
+                  <p class="notification-text">Your pickup request has been accepted</p>
+                  <span class="notification-time">5 minutes ago</span>
+                </div>
+              </div>
+              <div class="notification-item unread">
+                <i class="fas fa-truck"></i>
+                <div class="notification-content">
+                  <p class="notification-text">Collector is on the way</p>
+                  <span class="notification-time">10 minutes ago</span>
+                </div>
+              </div>
+              <div class="notification-item">
+                <i class="fas fa-award"></i>
+                <div class="notification-content">
+                  <p class="notification-text">You earned 20 green points!</p>
+                  <span class="notification-time">1 hour ago</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <!-- Content Container -->
+      <div class="content-container">
+
+        <!-- Dashboard Section -->
+        <section id="dashboard" class="content-section active">
+          <!-- Stats Cards -->
+          <div class="stats-grid">
+            <div class="stat-card">
+              <div class="stat-icon">
+                <i class="fas fa-clipboard-check"></i>
+              </div>
+              <div class="stat-content">
+                <span class="stat-label">Total Pickups</span>
+                <h3 class="stat-value" id="total-pickups">24</h3>
+                <span class="stat-trend positive">
+                  <i class="fas fa-arrow-up"></i> 12% from last month
+                </span>
+              </div>
+            </div>
+
+            <div class="stat-card">
+              <div class="stat-icon success">
+                <i class="fas fa-check-circle"></i>
+              </div>
+              <div class="stat-content">
+                <span class="stat-label">Completed</span>
+                <h3 class="stat-value" id="completed-pickups">18</h3>
+                <span class="stat-trend positive">
+                  <i class="fas fa-arrow-up"></i> 75% completion rate
+                </span>
+              </div>
+            </div>
+
+            <div class="stat-card">
+              <div class="stat-icon warning">
+                <i class="fas fa-clock"></i>
+              </div>
+              <div class="stat-content">
+                <span class="stat-label">Pending</span>
+                <h3 class="stat-value" id="pending-pickups">6</h3>
+                <span class="stat-trend neutral">
+                  <i class="fas fa-minus"></i> Awaiting collection
+                </span>
+              </div>
+            </div>
+
+            <div class="stat-card">
+              <div class="stat-icon points">
+                <i class="fas fa-leaf"></i>
+              </div>
+              <div class="stat-content">
+                <span class="stat-label">Green Points</span>
+                <h3 class="stat-value" id="green-points">480</h3>
+                <span class="stat-trend positive">
+                  <i class="fas fa-arrow-up"></i> +40 this week
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Quick Actions -->
+          <div class="quick-actions-section">
+            <h2 class="section-title">Quick Actions</h2>
+            <div class="quick-actions-grid">
+              <button class="action-card" onclick="showSection('request-pickup')">
+                <div class="action-icon">
+                  <i class="fas fa-calendar-plus"></i>
+                </div>
+                <h3 class="action-title">Schedule Pickup</h3>
+                <p class="action-description">Request a new waste collection</p>
+              </button>
+
+              <button class="action-card" onclick="showSection('scan-qr')">
+                <div class="action-icon">
+                  <i class="fas fa-qrcode"></i>
+                </div>
+                <h3 class="action-title">Scan QR</h3>
+                <p class="action-description">View your collection QR code</p>
+              </button>
+
+              <button class="action-card" onclick="showSection('complaints')">
+                <div class="action-icon">
+                  <i class="fas fa-exclamation-triangle"></i>
+                </div>
+                <h3 class="action-title">Report Issue</h3>
+                <p class="action-description">Submit a complaint or feedback</p>
+              </button>
+
+              <button class="action-card" onclick="showSection('track-collector')">
+                <div class="action-icon">
+                  <i class="fas fa-map-marked-alt"></i>
+                </div>
+                <h3 class="action-title">Track Collector</h3>
+                <p class="action-description">See real-time location</p>
+              </button>
+            </div>
+          </div>
+
+          <!-- Recent Activity -->
+          <div class="recent-activity-section">
+            <div class="section-header">
+              <h2 class="section-title">Recent Activity</h2>
+              <a href="#" class="view-all-link" onclick="showSection('history')">View All</a>
+            </div>
+            <div class="activity-list" id="recent-activity">
+              <div class="activity-item">
+                <div class="activity-icon completed">
+                  <i class="fas fa-check"></i>
+                </div>
+                <div class="activity-content">
+                  <h4 class="activity-title">Waste Collection Completed</h4>
+                  <p class="activity-description">Order #SAR-20260213-AB12C • Dry Waste • 5kg</p>
+                  <span class="activity-time">2 hours ago</span>
+                </div>
+                <span class="activity-badge success">Completed</span>
+              </div>
+
+              <div class="activity-item">
+                <div class="activity-icon pending">
+                  <i class="fas fa-clock"></i>
+                </div>
+                <div class="activity-content">
+                  <h4 class="activity-title">Pickup Scheduled</h4>
+                  <p class="activity-description">Order #SAR-20260214-CD34E • Wet Waste • 3kg</p>
+                  <span class="activity-time">1 day ago</span>
+                </div>
+                <span class="activity-badge pending">Pending</span>
+              </div>
+
+              <div class="activity-item">
+                <div class="activity-icon points">
+                  <i class="fas fa-award"></i>
+                </div>
+                <div class="activity-content">
+                  <h4 class="activity-title">Green Points Earned</h4>
+                  <p class="activity-description">You earned 20 points for eco-friendly disposal</p>
+                  <span class="activity-time">3 days ago</span>
+                </div>
+                <span class="activity-badge points">+20 Points</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Request Pickup Section -->
+        <section id="request-pickup" class="content-section">
+          <div class="section-header">
+            <h2 class="section-title">Request Garbage Collection</h2>
+            <p class="section-description">Fill in the details below to schedule a pickup</p>
+          </div>
+
+          <div class="form-card">
+            <form id="pickup-form" onsubmit="submitPickupRequest(event)">
+              <div class="form-section">
+                <h3 class="form-section-title">Personal Information</h3>
+                <div class="form-row">
+                  <div class="form-group">
+                    <label for="name">Full Name *</label>
+                    <input type="text" id="name" required placeholder="Enter your full name">
+                  </div>
+                  <div class="form-group">
+                    <label for="phone">Phone Number *</label>
+                    <input type="tel" id="phone" required placeholder="+91 XXXXX XXXXX">
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-section">
+                <h3 class="form-section-title">Location Details</h3>
+                <div class="form-group">
+                  <label for="address">Pickup Address *</label>
+                  <textarea id="address" rows="3" required placeholder="Enter complete address with landmarks"></textarea>
+                </div>
+                <div class="form-group">
+                  <label for="location">Location Link (Google Maps) *</label>
+                  <input type="url" id="location" required placeholder="https://maps.google.com/...">
+                  <button type="button" class="btn-secondary" onclick="useCurrentLocation()">
+                    <i class="fas fa-location-arrow"></i> Use Current Location
+                  </button>
+                </div>
+              </div>
+
+              <div class="form-section">
+                <h3 class="form-section-title">Waste Details</h3>
+                <div class="form-row">
+                  <div class="form-group">
+                    <label for="garbage-type">Garbage Type *</label>
+                    <select id="garbage-type" required>
+                      <option value="">Select Type</option>
+                      <option value="wet">🥬 Wet Waste (Organic)</option>
+                      <option value="dry">♻️ Dry Waste (Recyclable)</option>
+                      <option value="e-waste">🔌 E-Waste</option>
+                      <option value="hazardous">⚠️ Hazardous Waste</option>
+                      <option value="mixed">🗑️ Mixed Waste</option>
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label for="weight">Estimated Weight (kg) *</label>
+                    <input type="number" id="weight" min="1" required placeholder="Enter weight">
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-section">
+                <h3 class="form-section-title">Schedule</h3>
+                <div class="form-row">
+                  <div class="form-group">
+                    <label for="pickup-date">Pickup Date *</label>
+                    <input type="date" id="pickup-date" required>
+                  </div>
+                  <div class="form-group">
+                    <label for="pickup-time">Preferred Time *</label>
+                    <input type="time" id="pickup-time" required>
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-section">
+                <h3 class="form-section-title">Additional Information</h3>
+                <div class="form-group">
+                  <label for="notes">Special Instructions (Optional)</label>
+                  <textarea id="notes" rows="3" placeholder="Any special instructions for the collector..."></textarea>
+                </div>
+              </div>
+
+              <div class="form-actions">
+                <button type="button" class="btn-secondary" onclick="resetForm()">
+                  <i class="fas fa-redo"></i> Reset Form
+                </button>
+                <button type="submit" class="btn-primary">
+                  <i class="fas fa-paper-plane"></i> Submit Request
+                </button>
+              </div>
+            </form>
+          </div>
+
+          <!-- QR Code Display (Hidden initially) -->
+          <div id="qr-result" class="qr-display" style="display: none;">
+            <div class="success-animation">
+              <i class="fas fa-check-circle"></i>
+            </div>
+            <h2 class="success-title">Request Submitted Successfully!</h2>
+            <p class="success-message">Your unique QR code has been generated</p>
+            
+            <div class="qr-code-container">
+              <div id="qrcode"></div>
+            </div>
+            
+            <div class="order-info">
+              <p class="order-id-label">Order ID</p>
+              <h3 class="order-id-value" id="order-id">SAR-20260213-AB12C</h3>
+            </div>
+            
+            <p class="qr-instruction">
+              <i class="fas fa-info-circle"></i>
+              Show this QR code to the collector for verification
+            </p>
+            
+            <div class="qr-actions">
+              <button class="btn-primary" onclick="downloadQR()">
+                <i class="fas fa-download"></i> Download QR Code
+              </button>
+              <button class="btn-secondary" onclick="resetForm()">
+                <i class="fas fa-plus"></i> Create Another Request
+              </button>
+            </div>
+          </div>
+        </section>
+
+        <!-- My Requests Section -->
+        <section id="my-requests" class="content-section">
+          <div class="section-header">
+            <h2 class="section-title">My Requests</h2>
+            <button class="btn-secondary" onclick="loadRequests()">
+              <i class="fas fa-sync"></i> Refresh
+            </button>
+          </div>
+
+          <div class="requests-container" id="requests-container">
+            <!-- Requests will be loaded here dynamically -->
+          </div>
+        </section>
+
+        <!-- Track Collector Section -->
+        <section id="track-collector" class="content-section">
+          <div class="section-header">
+            <h2 class="section-title">Track Collector</h2>
+            <button class="btn-secondary" onclick="showSection('my-requests')">
+              <i class="fas fa-arrow-left"></i> Back to Requests
+            </button>
+          </div>
+
+          <div class="tracking-card">
+            <div class="tracking-info">
+              <div class="collector-info">
+                <div class="collector-avatar">
+                  <i class="fas fa-user-circle"></i>
+                </div>
+                <div class="collector-details">
+                  <h3 id="collector-name">Collector Name</h3>
+                  <p id="collector-phone">Phone: +91 XXXXX XXXXX</p>
+                  <span class="collector-status online">
+                    <i class="fas fa-circle"></i> Online
+                  </span>
+                </div>
+              </div>
+              
+              <div class="tracking-stats">
+                <div class="tracking-stat">
+                  <i class="fas fa-route"></i>
+                  <div>
+                    <span class="stat-label">Distance</span>
+                    <span class="stat-value" id="distance-value">2.5 km</span>
+                  </div>
+                </div>
+                <div class="tracking-stat">
+                  <i class="fas fa-clock"></i>
+                  <div>
+                    <span class="stat-label">ETA</span>
+                    <span class="stat-value" id="eta-value">15 min</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="map-container" id="map-container"></div>
+
+            <div class="tracking-actions">
+              <button class="btn-primary" onclick="callCollector()">
+                <i class="fas fa-phone"></i> Call Collector
+              </button>
+              <button class="btn-secondary" onclick="refreshTracking()">
+                <i class="fas fa-sync"></i> Refresh Location
+              </button>
+            </div>
+          </div>
+        </section>
+
+        <!-- History Section -->
+        <section id="history" class="content-section">
+          <div class="section-header">
+            <h2 class="section-title">Collection History</h2>
+            <div class="filter-group">
+              <select class="filter-select" onchange="filterHistory(this.value)">
+                <option value="all">All Time</option>
+                <option value="week">This Week</option>
+                <option value="month">This Month</option>
+                <option value="year">This Year</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="history-stats">
+            <div class="history-stat-card">
+              <i class="fas fa-weight"></i>
+              <div>
+                <span class="stat-label">Total Waste Collected</span>
+                <span class="stat-value">156 kg</span>
+              </div>
+            </div>
+            <div class="history-stat-card">
+              <i class="fas fa-tree"></i>
+              <div>
+                <span class="stat-label">Carbon Saved</span>
+                <span class="stat-value">45 kg CO₂</span>
+              </div>
+            </div>
+            <div class="history-stat-card">
+              <i class="fas fa-award"></i>
+              <div>
+                <span class="stat-label">Total Points Earned</span>
+                <span class="stat-value">480 pts</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="history-container" id="history-container">
+            <!-- History items will be loaded here -->
+          </div>
+        </section>
+
+        <!-- Profile Section -->
+        <section id="profile" class="content-section">
+          <div class="section-header">
+            <h2 class="section-title">My Profile</h2>
+            <button class="btn-secondary" onclick="editProfile()">
+              <i class="fas fa-edit"></i> Edit Profile
+            </button>
+          </div>
+
+          <div class="profile-card">
+            <div class="profile-header">
+              <div class="profile-avatar-large">
+                <i class="fas fa-user"></i>
+              </div>
+              <div class="profile-info">
+                <h2 class="profile-name">John Doe</h2>
+                <p class="profile-email">john.doe@example.com</p>
+                <span class="profile-badge">
+                  <i class="fas fa-star"></i> Gold Member
+                </span>
+              </div>
+            </div>
+
+            <div class="profile-details">
+              <div class="detail-group">
+                <label>Phone Number</label>
+                <p>+91 98765 43210</p>
+              </div>
+              <div class="detail-group">
+                <label>Address</label>
+                <p>123 Green Street, Eco Colony, Bangalore - 560001</p>
+              </div>
+              <div class="detail-group">
+                <label>Member Since</label>
+                <p>January 2024</p>
+              </div>
+              <div class="detail-group">
+                <label>Total Collections</label>
+                <p>24 pickups</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Complaints Section -->
+        <section id="complaints" class="content-section">
+          <div class="section-header">
+            <h2 class="section-title">Complaints & Feedback</h2>
+            <button class="btn-primary" onclick="showComplaintForm()">
+              <i class="fas fa-plus"></i> New Complaint
+            </button>
+          </div>
+
+          <div class="complaint-form-card" id="complaint-form" style="display: none;">
+            <h3>Submit a Complaint</h3>
+            <form onsubmit="submitComplaint(event)">
+              <div class="form-group">
+                <label for="complaint-type">Complaint Type *</label>
+                <select id="complaint-type" required>
+                  <option value="">Select Type</option>
+                  <option value="missed">Missed Pickup</option>
+                  <option value="behavior">Collector Behavior</option>
+                  <option value="quality">Service Quality</option>
+                  <option value="billing">Billing Issue</option>
+                  <option value="other">Other</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="complaint-order">Related Order ID (Optional)</label>
+                <input type="text" id="complaint-order" placeholder="SAR-XXXXXXXX-XXXXX">
+              </div>
+              <div class="form-group">
+                <label for="complaint-description">Description *</label>
+                <textarea id="complaint-description" rows="4" required placeholder="Describe your issue..."></textarea>
+              </div>
+              <div class="form-actions">
+                <button type="button" class="btn-secondary" onclick="hideComplaintForm()">Cancel</button>
+                <button type="submit" class="btn-primary">Submit Complaint</button>
+              </div>
+            </form>
+          </div>
+
+          <div class="complaints-list" id="complaints-list">
+            <!-- Complaints will be loaded here -->
+          </div>
+        </section>
+      </div>
+    </main>
+  </div>
+
+  <!-- Scripts -->
+  <script src="js/firebase-config.js"></script>
+  <script src="js/firebase-utils.js"></script>
+  <script src="js/mapbox-utils.js"></script>
+  <script src="js/citizen-dashboard.js"></script>
+</body>
+</html>

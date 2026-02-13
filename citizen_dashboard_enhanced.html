@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Citizen Dashboard - Sarathi</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Mapbox GL JS -->
+  <link href='https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.css' rel='stylesheet' />
+  <script src='https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js'></script>
+  
+  <!-- Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+  
+  <!-- QR Code -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  
+  <!-- TensorFlow for Garbage Detection -->
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@3.11.0/dist/tf.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/coco-ssd@2.2.2/dist/coco-ssd.min.js"></script>
+  
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/dashboard.css">
+  
+  <style>
+    /* Tracking Map Styles */
+    #tracking-map {
+      width: 100%;
+      height: 400px;
+      border-radius: 12px;
+      margin: 20px 0;
+    }
+    
+    .tracking-info {
+      background: #f0f9f5;
+      padding: 20px;
+      border-radius: 12px;
+      margin: 20px 0;
+      border-left: 4px solid #1f7a5a;
+    }
+    
+    .collector-info {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      padding: 20px;
+      background: white;
+      border-radius: 12px;
+      margin: 15px 0;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    }
+    
+    .collector-avatar {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #1f7a5a, #2e8b57);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 1.5rem;
+    }
+    
+    .eta-badge {
+      background: #1f7a5a;
+      color: white;
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-weight: 600;
+      display: inline-block;
+      margin: 10px 0;
+    }
+    
+    .pulse {
+      animation: pulse 2s infinite;
+    }
+    
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+    
+    .location-input-group {
+      position: relative;
+    }
+    
+    .location-buttons {
+      display: flex;
+      gap: 10px;
+      margin-top: 10px;
+    }
+    
+    .location-btn {
+      flex: 1;
+      padding: 10px;
+      border: 2px solid #1f7a5a;
+      background: white;
+      color: #1f7a5a;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: all 0.3s;
+    }
+    
+    .location-btn:hover {
+      background: #1f7a5a;
+      color: white;
+    }
+    
+    .qr-display-large {
+      text-align: center;
+      padding: 40px;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    }
+    
+    .rating-stars {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      margin: 20px 0;
+    }
+    
+    .rating-stars i {
+      font-size: 2rem;
+      color: #d1d5db;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    
+    .rating-stars i:hover,
+    .rating-stars i.active {
+      color: #fbbf24;
+      transform: scale(1.2);
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <button class="mobile-menu-toggle" onclick="toggleSidebar()">
+      <i class="fas fa-bars"></i>
+    </button>
+
+    <nav class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <div class="logo">
+          <i class="fas fa-recycle"></i>
+          <span>Sarathi Citizen</span>
+        </div>
+      </div>
+      <div class="nav-menu">
+        <ul>
+          <li><a href="#" class="nav-link active" onclick="showSection('dashboard')">
+            <i class="fas fa-home"></i><span>Dashboard</span></a></li>
+          <li><a href="#" class="nav-link" onclick="showSection('request-pickup')">
+            <i class="fas fa-calendar-plus"></i><span>Request Pickup</span></a></li>
+          <li><a href="#" class="nav-link" onclick="showSection('track-order')">
+            <i class="fas fa-map-marker-alt"></i><span>Track Order</span></a></li>
+          <li><a href="#" class="nav-link" onclick="showSection('my-orders')">
+            <i class="fas fa-list"></i><span>My Orders</span></a></li>
+          <li><a href="#" class="nav-link" onclick="showSection('scan-garbage')">
+            <i class="fas fa-camera"></i><span>Scan Garbage</span></a></li>
+          <li><a href="#" class="nav-link" onclick="showSection('complaints')">
+            <i class="fas fa-exclamation-circle"></i><span>Complaints</span></a></li>
+          <li><a href="#" class="nav-link" onclick="showSection('history')">
+            <i class="fas fa-history"></i><span>History</span></a></li>
+          <li><a href="#" class="nav-link" onclick="showSection('profile')">
+            <i class="fas fa-user-circle"></i><span>Profile</span></a></li>
+        </ul>
+      </div>
+      <div class="sidebar-footer">
+        <button class="btn-logout" onclick="logout()">
+          <i class="fas fa-sign-out-alt"></i><span>Logout</span>
+        </button>
+      </div>
+    </nav>
+
+    <main class="main-content">
+      <header class="top-bar">
+        <div class="page-title">
+          <h1 id="page-title">Dashboard</h1>
+          <p id="page-subtitle">Manage your waste collection requests</p>
+        </div>
+      </header>
+
+      <div class="content-container">

@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Collector Dashboard - Sarathi</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/dashboard.css">
+  <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
+  <style>
+    /* Collector-specific theme overrides */
+    .sidebar {
+      background: #1e3a8a;
+    }
+    .sidebar .logo i {
+      color: #3b82f6;
+    }
+    .nav-link:hover, .nav-link.active {
+      background: rgba(59, 130, 246, 0.3);
+      border-left-color: #3b82f6;
+    }
+    .card-icon {
+      background: linear-gradient(135deg, #3b82f6, #2563eb);
+    }
+    .action-card:hover {
+      border-color: #3b82f6;
+      box-shadow: 0 5px 20px rgba(59, 130, 246, 0.2);
+    }
+    .action-card i {
+      color: #3b82f6;
+    }
+    .btn-primary {
+      background: #3b82f6;
+    }
+    .btn-primary:hover {
+      background: #2563eb;
+    }
+    .btn-outline {
+      color: #3b82f6;
+      border-color: #3b82f6;
+    }
+    .btn-outline:hover {
+      background: #3b82f6;
+    }
+    .order-card {
+      border-left-color: #3b82f6;
+    }
+    .mobile-menu-toggle {
+      background: #3b82f6;
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <button class="mobile-menu-toggle" onclick="toggleSidebar()">
+      <i class="fas fa-bars"></i>
+    </button>
+
+    <nav class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <div class="logo">
+          <i class="fas fa-truck"></i>
+          <span>Sarathi Collector</span>
+        </div>
+      </div>
+      <div class="nav-menu">
+        <ul>
+          <li><a href="#" class="nav-link active" onclick="showSection('dashboard')">
+            <i class="fas fa-home"></i><span>Dashboard</span></a></li>
+          <li><a href="#" class="nav-link" onclick="showSection('my-tasks')">
+            <i class="fas fa-tasks"></i><span>My Tasks</span></a></li>
+          <li><a href="#" class="nav-link" onclick="showSection('qr-scanner')">
+            <i class="fas fa-qrcode"></i><span>QR Scanner</span></a></li>
+          <li><a href="#" class="nav-link" onclick="showSection('route-map')">
+            <i class="fas fa-map-marked-alt"></i><span>Route Map</span></a></li>
+          <li><a href="#" class="nav-link" onclick="showSection('history')">
+            <i class="fas fa-history"></i><span>History</span></a></li>
+          <li><a href="#" class="nav-link" onclick="showSection('profile')">
+            <i class="fas fa-user-circle"></i><span>Profile</span></a></li>
+        </ul>
+      </div>
+      <div class="sidebar-footer">
+        <button class="btn-logout" onclick="window.location.href='index.html'">
+          <i class="fas fa-sign-out-alt"></i><span>Logout</span>
+        </button>
+      </div>
+    </nav>
+
+    <main class="main-content">
+      <header class="top-bar">
+        <div class="page-title">
+          <h1 id="page-title">Dashboard</h1>
+          <p id="page-subtitle">Your daily collection route</p>
+        </div>
+      </header>
+
+      <div class="content-container">
+
+        <!-- Dashboard Section -->
+        <section id="dashboard" class="content-section active">
+          <div class="overview-cards">
+            <div class="overview-card">
+              <div class="card-icon"><i class="fas fa-clipboard-list"></i></div>
+              <div class="card-content">
+                <h3 id="total-tasks">0</h3>
+                <p>Today's Tasks</p>
+                <small class="trend neutral">Assigned to you</small>
+              </div>
+            </div>
+            <div class="overview-card">
+              <div class="card-icon success"><i class="fas fa-check-circle"></i></div>
+              <div class="card-content">
+                <h3 id="completed-tasks">0</h3>
+                <p>Completed</p>
+                <small class="trend positive">Today</small>
+              </div>
+            </div>
+            <div class="overview-card">
+              <div class="card-icon warning"><i class="fas fa-weight"></i></div>
+              <div class="card-content">
+                <h3 id="total-weight">0 kg</h3>
+                <p>Waste Collected</p>
+                <small class="trend positive">Today</small>
+              </div>
+            </div>
+            <div class="overview-card">
+              <div class="card-icon info"><i class="fas fa-route"></i></div>
+              <div class="card-content">
+                <h3 id="distance">12 km</h3>
+                <p>Distance Covered</p>
+                <small class="trend neutral">Estimated</small>
+              </div>
+            </div>
+          </div>
+
+          <div class="quick-actions">
+            <h2>Quick Actions</h2>
+            <div class="actions-grid">
+              <button class="action-card" onclick="showSection('my-tasks')">
+                <i class="fas fa-tasks"></i>
+                <span>View My Tasks</span>
+              </button>
+              <button class="action-card" onclick="showSection('qr-scanner')">
+                <i class="fas fa-qrcode"></i>
+                <span>Scan QR Code</span>
+              </button>
+              <button class="action-card" onclick="showSection('route-map')">
+                <i class="fas fa-map-marked-alt"></i>
+                <span>View Route</span>
+              </button>
+              <button class="action-card" onclick="showSection('history')">
+                <i class="fas fa-history"></i>
+                <span>View History</span>
+              </button>
+            </div>
+          </div>
+        </section>
+
+        <!-- My Tasks Section -->
+        <section id="my-tasks" class="content-section">
+          <div class="section-header">
+            <h2>My Tasks</h2>
+            <button class="btn btn-outline" onclick="loadTasks()">
+              <i class="fas fa-sync"></i> Refresh
+            </button>
+          </div>
+          <div id="tasks-container" class="orders-list"></div>
+        </section>
+
+        <!-- QR Scanner Section -->
+        <section id="qr-scanner" class="content-section">
+          <div class="section-header">
+            <h2>QR Code Scanner</h2>
+          </div>
+          <div class="scanner-card">
+            <p class="scanner-description">Scan the citizen's QR code to verify and complete collection</p>
+            <div id="qr-reader"></div>
+            <div class="scanner-actions">
+              <button class="btn btn-primary" onclick="startScanner()">
+                <i class="fas fa-camera"></i> Start Scanner
+              </button>
+              <button class="btn btn-danger" onclick="stopScanner()">
+                <i class="fas fa-stop"></i> Stop Scanner
+              </button>
+            </div>
+            <div id="scan-result" class="detection-result" style="display: none;">
+              <h3>Scanned Order Details</h3>
+              <div id="scanned-order-details"></div>
+              <div class="scanner-actions" style="margin-top: 20px;">
+                <button class="btn btn-primary" onclick="completeCollection()">
+                  <i class="fas fa-check"></i> Complete Collection
+                </button>
+                <button class="btn btn-outline" onclick="resetScanner()">
+                  <i class="fas fa-redo"></i> Scan Again
+                </button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Route Map Section -->
+        <section id="route-map" class="content-section">
+          <div class="section-header">
+            <h2>Route Map</h2>
+          </div>
+          <div class="scanner-card">
+            <div style="padding: 60px 20px; text-align: center; background: #f9fafb; border-radius: 12px;">
+              <i class="fas fa-map" style="font-size: 4rem; color: #3b82f6; margin-bottom: 20px;"></i>
+              <h3 style="color: #1f2937; margin-bottom: 10px;">Interactive Route Map</h3>
+              <p style="color: #6b7280;">Your optimized collection route will be displayed here</p>
+              <div style="margin-top: 30px; display: flex; gap: 20px; justify-content: center; flex-wrap: wrap;">
+                <div style="display: flex; align-items: center; gap: 8px;">
+                  <span style="width: 20px; height: 20px; background: #fef3c7; border-radius: 50%; display: inline-block;"></span>
+                  <span style="color: #6b7280;">Pending</span>
+                </div>
+                <div style="display: flex; align-items: center; gap: 8px;">
+                  <span style="width: 20px; height: 20px; background: #dbeafe; border-radius: 50%; display: inline-block;"></span>
+                  <span style="color: #6b7280;">Assigned</span>
+                </div>
+                <div style="display: flex; align-items: center; gap: 8px;">
+                  <span style="width: 20px; height: 20px; background: #d1fae5; border-radius: 50%; display: inline-block;"></span>
+                  <span style="color: #6b7280;">Completed</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- History Section -->
+        <section id="history" class="content-section">
+          <div class="section-header">
+            <h2>Collection History</h2>
+          </div>
+          <div id="history-container" class="orders-list"></div>
+        </section>
+
+        <!-- Profile Section -->
+        <section id="profile" class="content-section">
+          <div class="section-header">
+            <h2>My Profile</h2>
+          </div>
+          <div class="form-card">
+            <div class="form-group">
+              <label>Name</label>
+              <input type="text" value="John Collector" readonly>
+            </div>
+            <div class="form-group">
+              <label>Employee ID</label>
+              <input type="text" value="COL001" readonly>
+            </div>
+            <div class="form-group">
+              <label>Zone</label>
+              <input type="text" value="North Zone" readonly>
+            </div>
+            <div class="form-group">
+              <label>Contact</label>
+              <input type="tel" value="+1234567890" readonly>
+            </div>
+          </div>
+        </section>
+      </div>
+    </main>
+  </div>
+
+  <script src="js/collector-dashboard.js"></script>
+</body>
+</html>

@@ -24,23 +24,23 @@ function showCircleSelection() {
             <div class="circle-selection">
                 <div class="user-circle" onclick="showLoginForm('citizen')">
                     <div class="circle circle-citizen">
-                        <i class="fas fa-user"></i>
+                        <img src="assets/request.png" alt="Citizen">
                     </div>
-                    <span class="user-label">Login as Citizen</span>
+                    <span class="user-label">Citizen</span>
                 </div>
                 
                 <div class="user-circle" onclick="showLoginForm('collector')">
                     <div class="circle circle-collector">
-                        <i class="fas fa-truck"></i>
+                        <img src="assets/pickup.png" alt="Collector">
                     </div>
-                    <span class="user-label">Login as Collector</span>
+                    <span class="user-label">Collector</span>
                 </div>
                 
                 <div class="user-circle" onclick="showLoginForm('admin')">
                     <div class="circle circle-admin">
-                        <i class="fas fa-shield-alt"></i>
+                        <img src="assets/verify.png" alt="Admin">
                     </div>
-                    <span class="user-label">Login as Admin</span>
+                    <span class="user-label">Admin</span>
                 </div>
             </div>
             
@@ -68,16 +68,16 @@ function showSignupOptions() {
             <div class="circle-selection">
                 <div class="user-circle" onclick="showSignupForm('citizen')">
                     <div class="circle circle-citizen">
-                        <i class="fas fa-user-plus"></i>
+                        <img src="assets/request.png" alt="Citizen">
                     </div>
-                    <span class="user-label">Sign Up as Citizen</span>
+                    <span class="user-label">Citizen</span>
                 </div>
                 
                 <div class="user-circle" onclick="showSignupForm('collector')">
                     <div class="circle circle-collector">
-                        <i class="fas fa-truck-loading"></i>
+                        <img src="assets/pickup.png" alt="Collector">
                     </div>
-                    <span class="user-label">Sign Up as Collector</span>
+                    <span class="user-label">Collector</span>
                 </div>
             </div>
             
@@ -342,9 +342,8 @@ function showLoginSuccess(userType) {
     // Redirect to dashboard
     setTimeout(() => {
         closeLoginModal();
-        // In real app, redirect to actual dashboard
-        // window.location.href = `${userType}-dashboard.html`;
-        alert(`Redirecting to ${userType} dashboard...`);
+        // Redirect to actual dashboard
+        window.location.href = `${userType}_dashboard.html`;
     }, 2000);
 }
 
